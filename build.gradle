@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'com.bmuschko.izpack' version '3.2'
+    id 'edu.sc.seis.launch4j' version '3.0.5'
+}
+
+group = 'org.raw'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    // https://mvnrepository.com/artifact/org.codehaus.izpack/izpack-panel
+    implementation group: 'org.codehaus.izpack', name: 'izpack-panel', version: '5.2.1'
+    // https://mvnrepository.com/artifact/org.codehaus.izpack/izpack-api
+    implementation group: 'org.codehaus.izpack', name: 'izpack-api', version: '5.2.1'
+
+    izpack 'org.codehaus.izpack:izpack-ant:5.2.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.register('copyIzpackResources', Copy) {
+    from layout.projectDirectory.dir('installer/resources')
+    into layout.buildDirectory.dir('assemble/izpack')
+}
+
+jar {
+    archiveBaseName = 'izpack-process'
+    archiveVersion = version.toString()
+}
+
+tasks.register('copyProcessJar', Copy) {
+    from layout.buildDirectory.file("libs/izpack-process-${version}.jar")
+    into layout.buildDirectory.dir('assemble/izpack')
+    rename "izpack-process-${version}.jar", "izpack-process.jar"
+}
+
+izpack {
+    baseDir = layout.buildDirectory.dir('assemble/izpack').get().asFile
+    installFile = file('installer/izpack/installer.xml')
+    outputFile = layout.buildDirectory.file("distributions/izpack-demo-${version}-installer.jar").get().asFile
+    compression = 'deflate'
+    compressionLevel = 9
+    appProperties = ['app.group': 'org.raw', 'app.name': 'izpack-demo', 'app.title': 'izPack Demo',
+                     'app.version': version, 'app.subpath': "izpack-demo-$version"]
+}
+
+launch4j {
+    mainClassName = 'org.raw.'
+}
+
+tasks.register('buildDistribution') {
+    dependsOn 'jar'
+    dependsOn 'copyIzpackResources'
+    dependsOn 'copyProcessJar'
+    dependsOn 'izPackCreateInstaller'
+
+    tasks.findByName('copyIzpackResources').mustRunAfter 'jar'
+    tasks.findByName('copyProcessJar').mustRunAfter 'copyIzpackResources'
+    tasks.findByName('izPackCreateInstaller').mustRunAfter 'copyProcessJar'
+}

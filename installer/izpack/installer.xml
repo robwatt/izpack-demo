@@ -1,0 +1,60 @@
+<izpack:installation
+        xmlns:izpack="http://izpack.org/schema/installation"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
+    <info>
+        <appname>izPack demo</appname>
+        <appversion>1.0</appversion>
+        <authors>
+            <author name="Rob Watt" email=""/>
+        </authors>
+        <javaversion>17</javaversion>
+        <uninstaller name="uninstall.jar" path="${INSTALL_PATH}/uninstaller" write="yes"/>
+        <summarylogfilepath>$INSTALL_PATH/InstallationSummary.html</summarylogfilepath>
+        <writeinstallationinformation>no</writeinstallationinformation>
+    </info>
+
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+
+    <guiprefs width="600" height="480" resizable="no">
+        <modifier key="layoutAnchor" value="CENTER"/>
+        <modifier key="useHeadingPanel" value="yes"/>
+        <modifier key="useHeadingForSummary" value="yes"/>
+        <modifier key="headingImageOnLeft" value="yes"/>
+        <modifier key="headingLineCount" value="2"/>
+        <modifier key="headingFontSize" value="1.5"/>
+        <modifier key="headingBackgroundColor" value="0x00ffffff"/>
+        <modifier key="headingPanelCounter" value="text"/>
+        <modifier key="headingPanelCounterPos" value="inHeading"/>
+    </guiprefs>
+
+    <variables>
+        <variable name="DesktopShortcutCheckboxEnabled" value="false"/>
+        <variable name="TargetPanel.dir.windows" value="D:\dev\izpack-demo"/>
+    </variables>
+
+    <resources>
+        <res id="ProcessPanel.Spec.xml" src="ProcessPanel.Spec.xml"/>
+    </resources>
+
+    <jar src="izpack-process.jar" stage="install"/>
+
+    <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="HTMLInfoPanel" id="readme"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ProcessPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
+
+    <packs>
+        <pack name="base" required="yes" preselected="yes">
+            <description>The base files</description>
+            <file src="readme.txt" targetdir="$INSTALL_PATH"/>
+        </pack>
+    </packs>
+
+</izpack:installation>
