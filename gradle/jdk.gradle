@@ -1,0 +1,28 @@
+import java.nio.file.Files
+
+def jdkVersion = "jdk-17.0.10+7" // Eclipse Temurin JDK version to download ( from https://adoptium.net/temurin/releases/ )
+
+tasks.register('downloadJDK', Download) {
+    src "https://api.adoptium.net/v3/binary/version/${jdkVersion}/windows/x64/jre/hotspot/normal/eclipse?project=jdk"
+    dest layout.buildDirectory.file('jdk.zip')
+    overwrite false
+}
+
+tasks.register('prepareJDK', Copy) {
+    dependsOn downloadJDK
+
+    from zipTree(downloadJDK.dest)
+    into layout.buildDirectory
+
+    doLast {
+        def oldJDKPath = layout.buildDirectory.dir("${jdkVersion}-jre").get().asFile.toPath()
+        def newJDKPath = layout.buildDirectory.dir('jdk').get().asFile.toPath()
+        Files.move(oldJDKPath, newJDKPath)
+    }
+
+    finalizedBy deleteJDK
+}
+
+tasks.register('deleteJDK', Delete) {
+    delete layout.buildDirectory.file('jdk.zip')
+}

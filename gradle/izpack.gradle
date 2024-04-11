@@ -1,0 +1,20 @@
+tasks.register('copyIzpackResources', Copy) {
+    from layout.projectDirectory.dir('installer/resources')
+    into layout.buildDirectory.dir('assemble/izpack')
+}
+
+tasks.register('copyProcessJar', Copy) {
+    from layout.buildDirectory.file("libs/izpack-process-${version}.jar")
+    into layout.buildDirectory.dir('assemble/izpack')
+    rename "izpack-process-${version}.jar", "izpack-process.jar"
+}
+
+izpack {
+    baseDir = layout.buildDirectory.dir('assemble/izpack').get().asFile
+    installFile = file('installer/izpack/installer.xml')
+    outputFile = layout.buildDirectory.file("distributions/izpack-demo-${version}-installer.jar").get().asFile
+    compression = 'deflate'
+    compressionLevel = 9
+    appProperties = ['app.group': 'org.raw', 'app.name': 'izpack-demo', 'app.title': 'izPack Demo',
+                     'app.version': version, 'app.subpath': "izpack-demo-$version"]
+}
