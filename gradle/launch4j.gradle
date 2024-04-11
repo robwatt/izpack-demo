@@ -1,18 +1,24 @@
 apply from: 'gradle/jdk.gradle'
 
 launch4j {
-    outfile = 'installer-demo.exe'
+    outfile = 'installer.exe'
     mainClassName = 'com.izforge.izpack.installer.Installer'
     icon = layout.projectDirectory.file('src/main/resources/icon.ico').toString()
     bundledJrePath = './jdk'
 }
 
-// for the uninstaller com.izforge.izpack.uninstaller.Uninstaller
-
 //tasks.register('createInstaller', Launch4jLibraryTask) {
 //    dependsOn 'prepareJDK'
-//    outfile = 'installer-demo.exe'
+//    outfile = 'installer.exe'
 //    mainClassName = 'com.izforge.izpack.installer.Installer'
+//    icon = layout.projectDirectory.file('src/main/resources/icon.ico').toString()
+//    bundledJrePath = './jdk'
+//}
+
+//tasks.register('createUninstaller', Launch4jLibraryTask) {
+//    dependsOn 'prepareJDK'
+//    outfile = 'uninstaller.exe'
+//    mainClassName = 'com.izforge.izpack.uninstaller.Uninstaller'
 //    icon = layout.projectDirectory.file('src/main/resources/icon.ico').toString()
 //    bundledJrePath = './jdk'
 //}

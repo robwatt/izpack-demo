@@ -28,6 +28,11 @@ test {
     useJUnitPlatform()
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 jar {
     archiveBaseName = 'izpack-process'
     archiveVersion = version.toString()
@@ -38,10 +43,13 @@ tasks.register('buildDistribution') {
     dependsOn copyIzpackResources
     dependsOn copyProcessJar
     dependsOn izPackCreateInstaller
-//    dependsOn createInstallerExe
+    dependsOn createInstallerExe
 
     copyIzpackResources.mustRunAfter(jar)
     copyProcessJar.mustRunAfter(copyIzpackResources)
+    prepareJDK.mustRunAfter(copyProcessJar)
+    prepareJDK.mustRunAfter(createExe)
     izPackCreateInstaller.mustRunAfter(copyProcessJar)
-//    createInstallerExe.mustRunAfter(izPackCreateInstaller)
+    izPackCreateInstaller.mustRunAfter(prepareJDK)
+    createInstallerExe.mustRunAfter(izPackCreateInstaller)
 }

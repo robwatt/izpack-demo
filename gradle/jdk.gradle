@@ -9,7 +9,9 @@ tasks.register('downloadJDK', Download) {
 }
 
 tasks.register('prepareJDK', Copy) {
+    doNotTrackState('This task should not have up-to-date checks...')
     dependsOn downloadJDK
+    dependsOn jar
 
     from zipTree(downloadJDK.dest)
     into layout.buildDirectory

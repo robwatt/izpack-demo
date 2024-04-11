@@ -4,6 +4,7 @@ tasks.register('copyIzpackResources', Copy) {
 }
 
 tasks.register('copyProcessJar', Copy) {
+    dependsOn jar
     from layout.buildDirectory.file("libs/izpack-process-${version}.jar")
     into layout.buildDirectory.dir('assemble/izpack')
     rename "izpack-process-${version}.jar", "izpack-process.jar"
