@@ -1,4 +1,5 @@
 plugins {
+    id 'application'
     id 'java'
     id 'com.bmuschko.izpack' version '3.2'
     id 'edu.sc.seis.launch4j' version '3.0.5'
@@ -8,43 +9,45 @@ plugins {
 group = 'org.raw'
 version = '1.0-SNAPSHOT'
 
-apply from: 'gradle/izpack.gradle'
-apply from: 'gradle/launch4j.gradle'
+apply from: "${project.rootDir}/gradle/launch4j.gradle"
+apply from: "${project.rootDir}/gradle/izpack.gradle"
+apply from: "${project.rootDir}/gradle/jdk.gradle"
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    implementation group: 'org.codehaus.izpack', name: 'izpack-panel', version: '5.2.1'
-    implementation group: 'org.codehaus.izpack', name: 'izpack-api', version: '5.2.1'
+//distributions {
+//    main {
+//        distributionBaseName = 'product-dist'
+//        contents {
+//            from { project(':installer').layout.buildDirectory.dir('jdk')}
+//            from { project(':installer').layout.buildDirectory.dir('launch4j')}
+//            from { project(':product').layout.buildDirectory.file("distributions/product${version}.zip")}
+//        }
+//    }
+//}
+//
+//distZip.doLast {
+//    dependsOn makeExe
+//}
 
-    izpack 'org.codehaus.izpack:izpack-ant:5.2.1'
+tasks.register('makeExe', Copy) {
+    dependsOn copyJDK
+    dependsOn copyIZPack
+//    dependsOn izPackCreateInstaller
 }
 
-test {
-    useJUnitPlatform()
+tasks.register('copyJDK', Copy) {
+    from { project(':installer').layout.buildDirectory.dir('jdk')}
+    into layout.buildDirectory.dir('jdk')
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+tasks.register('copyIZPack', Copy) {
+    from { project(':installer').layout.buildDirectory.dir('assemble/izpack')}
+    into layout.buildDirectory
 }
 
-jar {
-    archiveBaseName = 'izpack-process'
-    archiveVersion = version.toString()
-}
-
-tasks.register('buildDistribution') {
-    dependsOn jar
-    dependsOn copyIzpackResources
-    dependsOn copyProcessJar
-    dependsOn izPackCreateInstaller
-    dependsOn createInstallerExe
-
-    izPackCreateInstaller.mustRunAfter(prepareJDK)
-    createInstallerExe.mustRunAfter(izPackCreateInstaller)
+assembleDist {
+    finalizedBy(makeExe)
 }

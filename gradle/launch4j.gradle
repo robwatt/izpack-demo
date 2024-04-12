@@ -1,5 +1,3 @@
-apply from: 'gradle/jdk.gradle'
-
 launch4j {
     outfile = 'installer.exe'
     mainClassName = 'com.izforge.izpack.installer.bootstrap.Installer'
@@ -24,13 +22,14 @@ launch4j {
 //    bundledJrePath = './jdk'
 //}
 
+// May not be needed unless we want to copy the jdk to the launch4j location to be zipped up at a later date
 tasks.register('createInstallerExe') {
     dependsOn createAllExecutables
-    dependsOn copyJDK
+//    dependsOn copyJDK
 }
 
-tasks.register('copyJDK', Copy) {
-    dependsOn prepareJDK
-    from layout.buildDirectory.dir('jdk')
-    into layout.buildDirectory.dir('launch4j/jdk')
-}
+//tasks.register('copyJDK', Copy) {
+//    dependsOn prepareJDK
+//    from layout.buildDirectory.dir('jdk')
+//    into layout.buildDirectory.dir('launch4j/jdk')
+//}

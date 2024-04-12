@@ -1,12 +1,20 @@
 tasks.register('copyIzpackResources', Copy) {
     dependsOn jar
 
-    from layout.projectDirectory.dir('installer/resources')
+    from layout.projectDirectory.dir('izpack/resources')
     into layout.buildDirectory.dir('assemble/izpack')
 }
 
-tasks.register('copyProcessJar', Copy) {
+tasks.register('copyProductZip', Copy) {
     dependsOn copyIzpackResources
+
+    from { project(':product').layout.buildDirectory.file("distributions/product${version}.zip")}
+    into layout.buildDirectory.dir('assemble/izpack')
+    rename "product${version}.zip", "product.zip"
+}
+
+tasks.register('copyProcessJar', Copy) {
+    dependsOn copyProductZip
 
     from layout.buildDirectory.file("libs/izpack-process-${version}.jar")
     into layout.buildDirectory.dir('assemble/izpack')
@@ -15,7 +23,7 @@ tasks.register('copyProcessJar', Copy) {
 
 izpack {
     baseDir = layout.buildDirectory.dir('assemble/izpack').get().asFile
-    installFile = file('installer/izpack/installer.xml')
+    installFile = file('izpack/installer.xml')
     outputFile = layout.buildDirectory.file("distributions/izpack-demo-${version}-installer.jar").get().asFile
     compression = 'deflate'
     compressionLevel = 9

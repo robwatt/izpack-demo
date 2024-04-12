@@ -12,6 +12,8 @@
         <uninstaller name="uninstall.jar" path="${INSTALL_PATH}/uninstaller" write="yes"/>
         <summarylogfilepath>$INSTALL_PATH/InstallationSummary.html</summarylogfilepath>
         <writeinstallationinformation>no</writeinstallationinformation>
+        <run-privileged/>
+        <tempdir/>
     </info>
 
     <locale>
@@ -32,17 +34,17 @@
 
     <variables>
         <variable name="DesktopShortcutCheckboxEnabled" value="false"/>
-        <variable name="TargetPanel.dir.windows" value="D:\dev\izpack-demo"/>
+        <variable name="TargetPanel.dir.windows" value="C:\dev\izpack-demo"/>
     </variables>
 
     <resources>
         <res id="ProcessPanel.Spec.xml" src="ProcessPanel.Spec.xml"/>
     </resources>
 
-    <jar src="izpack-process.jar" stage="install"/>
+    <jar src="izpack-process.jar"/>
 
     <panels>
-        <panel classname="HelloPanel"/>
+        <panel classname="CheckedHelloPanel"/>
         <panel classname="HTMLInfoPanel" id="readme"/>
         <panel classname="TargetPanel"/>
         <panel classname="InstallPanel"/>
@@ -51,10 +53,25 @@
     </panels>
 
     <packs>
-        <pack name="base" required="yes" preselected="yes">
-            <description>The base files</description>
-            <file src="readme.txt" targetdir="$INSTALL_PATH"/>
+        <pack name="Product ABC" required="yes" id="pack.product">
+            <description>Copy Product</description>
+            <file src="product.zip" targetdir="${INSTALL_PATH}" unpack="true" override="true"/>
         </pack>
     </packs>
+
+    <!--    While this works, changing the version of the app will create a 2nd version in Windows instead of upgrading the existing version. -->
+    <!--    <natives>-->
+    <!--        <native type="3rdparty" name="COIOSHelper.dll" stage="both">-->
+    <!--            <os family="windows"/>-->
+    <!--        </native>-->
+    <!--        <native type="3rdparty" name="COIOSHelper_x64.dll" stage="both">-->
+    <!--            <os family="windows"/>-->
+    <!--        </native>-->
+    <!--    </natives>-->
+
+    <!--    <listeners>-->
+    <!--        <listener classname="RegistryInstallerListener" stage="install"/>-->
+    <!--        <listener classname="RegistryUninstallerListener" stage="uninstall"/>-->
+    <!--    </listeners>-->
 
 </izpack:installation>
