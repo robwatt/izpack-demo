@@ -2,9 +2,10 @@ apply from: 'gradle/jdk.gradle'
 
 launch4j {
     outfile = 'installer.exe'
-    mainClassName = 'com.izforge.izpack.installer.Installer'
+    mainClassName = 'com.izforge.izpack.installer.bootstrap.Installer'
     icon = layout.projectDirectory.file('src/main/resources/icon.ico').toString()
     bundledJrePath = './jdk'
+    jarTask = project.tasks.izPackCreateInstaller
 }
 
 //tasks.register('createInstaller', Launch4jLibraryTask) {
@@ -24,6 +25,12 @@ launch4j {
 //}
 
 tasks.register('createInstallerExe') {
-    dependsOn prepareJDK
     dependsOn createAllExecutables
+    dependsOn copyJDK
+}
+
+tasks.register('copyJDK', Copy) {
+    dependsOn prepareJDK
+    from layout.buildDirectory.dir('jdk')
+    into layout.buildDirectory.dir('launch4j/jdk')
 }

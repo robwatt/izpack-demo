@@ -45,11 +45,6 @@ tasks.register('buildDistribution') {
     dependsOn izPackCreateInstaller
     dependsOn createInstallerExe
 
-    copyIzpackResources.mustRunAfter(jar)
-    copyProcessJar.mustRunAfter(copyIzpackResources)
-    prepareJDK.mustRunAfter(copyProcessJar)
-    prepareJDK.mustRunAfter(createExe)
-    izPackCreateInstaller.mustRunAfter(copyProcessJar)
     izPackCreateInstaller.mustRunAfter(prepareJDK)
     createInstallerExe.mustRunAfter(izPackCreateInstaller)
 }
