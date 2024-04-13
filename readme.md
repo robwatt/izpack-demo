@@ -20,12 +20,15 @@ This contains anything to do with downloading and bundling a jdk
 
 This contains anything to do with configuring and running launch4j.
 
+### build.gradle
+
+Each module has its own `build.gradle` file.  These are mostly self-explanatory.  The parent build.gradle is responsible for generating the overall distribution.
+
 ## How it works
 
 It works like so:
-* Build the jar file - in this case the jar file is a process that is used inside the ProcessPanel of izpack.
-* Copy the izpack resources - this is anything in the installer directory and will be copied into the izpack assemble directory
-* Copy the jar file from above into the izpack assemble directory
-* Create the installer jar by invoking izpack gradle task
-  * This has a dependency on download/unzip the JDK we will use as the bundled JDK for the executable
-* Create the exe launcher based on the installer jar file - the JDK sits next to the exe, so it has a bundled JDK used to run
+* Run `./gradlew distZip`, this will build the required `jar` and `zip` files in the `installer` and `product` modules.
+* Once successful, run `./gradlew makeInstaller` this needs to be run separately due needing the output of `distZip` from specifically the `product` project.
+  * This will create installer jar file and place it in the parent `/build` folder.
+* Next run `./gradlew createAllExecutables`, this will create the file `installer.exe` with the `process.jar` and the `product.zip` embedded in it
+* TODO - bundle it all together in a single `zip` file that can then be delivered to a user to unzip and install.

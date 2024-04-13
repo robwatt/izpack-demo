@@ -6,8 +6,6 @@ plugins {
     id 'de.undercouch.download' version "5.1.0"
 }
 
-apply from: "${project.rootDir}/gradle/launch4j.gradle"
-apply from: "${project.rootDir}/gradle/izpack.gradle"
 apply from: "${project.rootDir}/gradle/jdk.gradle"
 
 group = 'org.raw'
@@ -32,10 +30,6 @@ jar {
     archiveVersion = version.toString()
 }
 
-//izPackCreateInstaller.dependsOn prepareJDK
-//createExe.dependsOn izPackCreateInstaller
-//assembleDist.dependsOn createExe
-//distZip.dependsOn createExe
 distZip.dependsOn prepareJDK
 distTar.dependsOn prepareJDK
 startScripts.dependsOn prepareJDK

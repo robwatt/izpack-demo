@@ -1,7 +1,7 @@
 launch4j {
     outfile = 'installer.exe'
     mainClassName = 'com.izforge.izpack.installer.bootstrap.Installer'
-    icon = layout.projectDirectory.file('src/main/resources/icon.ico').toString()
+    icon = project(':installer').layout.projectDirectory.file('src/main/resources/icon.ico').toString()
     bundledJrePath = './jdk'
     jarTask = project.tasks.izPackCreateInstaller
 }
@@ -25,11 +25,4 @@ launch4j {
 // May not be needed unless we want to copy the jdk to the launch4j location to be zipped up at a later date
 tasks.register('createInstallerExe') {
     dependsOn createAllExecutables
-//    dependsOn copyJDK
 }
-
-//tasks.register('copyJDK', Copy) {
-//    dependsOn prepareJDK
-//    from layout.buildDirectory.dir('jdk')
-//    into layout.buildDirectory.dir('launch4j/jdk')
-//}

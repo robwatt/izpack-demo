@@ -1,24 +1,32 @@
-tasks.register('copyIzpackResources', Copy) {
-    dependsOn jar
+// Tasks needed to build the installer
 
+// Copy izpack resources
+tasks.register('copyIzpackResources', Copy) {
     from layout.projectDirectory.dir('izpack/resources')
     into layout.buildDirectory.dir('assemble/izpack')
 }
 
+// Copy the product zip which contains all required jar files to run the product
+// These will be next to the installer and unzipped during installation
 tasks.register('copyProductZip', Copy) {
-    dependsOn copyIzpackResources
-
-    from { project(':product').layout.buildDirectory.file("distributions/product${version}.zip")}
+    from { project(':product').layout.buildDirectory.file("distributions/product-${version}.zip")}
     into layout.buildDirectory.dir('assemble/izpack')
-    rename "product${version}.zip", "product.zip"
+    rename "product-${version}.zip", "product.zip"
 }
 
+// Copy the process jar.  This contains custom java code the installer will use for the ProcessPanel, or any other
+// use case in the installer as defined by the installer.xml
 tasks.register('copyProcessJar', Copy) {
-    dependsOn copyProductZip
-
-    from layout.buildDirectory.file("libs/izpack-process-${version}.jar")
+    // copy the process jar created in the installer module into the main parent build folder for further processing
+    from { project(':installer').layout.buildDirectory.file("libs/izpack-process-${version}.jar") }
     into layout.buildDirectory.dir('assemble/izpack')
-    rename "izpack-process-${version}.jar", "izpack-process.jar"
+    rename "izpack-process-${version}.jar", 'izpack-process.jar'
+}
+
+// Copy the jdk that will be bundled with the EXE
+tasks.register('copyJDK', Copy) {
+    from { project(':installer').layout.buildDirectory.dir('jdk') }
+    into layout.buildDirectory.dir('jdk')
 }
 
 izpack {

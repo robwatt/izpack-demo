@@ -17,37 +17,22 @@ repositories {
     mavenCentral()
 }
 
-//distributions {
-//    main {
-//        distributionBaseName = 'product-dist'
-//        contents {
-//            from { project(':installer').layout.buildDirectory.dir('jdk')}
-//            from { project(':installer').layout.buildDirectory.dir('launch4j')}
-//            from { project(':product').layout.buildDirectory.file("distributions/product${version}.zip")}
-//        }
-//    }
-//}
-//
-//distZip.doLast {
-//    dependsOn makeExe
-//}
+dependencies {
+    izpack 'org.codehaus.izpack:izpack-ant:5.2.1'
+}
 
-tasks.register('makeExe', Copy) {
+tasks.register('makeInstaller', Copy) {
     dependsOn copyJDK
-    dependsOn copyIZPack
-//    dependsOn izPackCreateInstaller
-}
+    dependsOn copyIzpackResources
+    dependsOn copyProcessJar
+    dependsOn copyProductZip
+    dependsOn distZip
+    dependsOn izPackCreateInstaller
 
-tasks.register('copyJDK', Copy) {
-    from { project(':installer').layout.buildDirectory.dir('jdk')}
-    into layout.buildDirectory.dir('jdk')
-}
-
-tasks.register('copyIZPack', Copy) {
-    from { project(':installer').layout.buildDirectory.dir('assemble/izpack')}
-    into layout.buildDirectory
-}
-
-assembleDist {
-    finalizedBy(makeExe)
+    tasks.jar.mustRunAfter copyProcessJar
+    tasks.copyIzpackResources.mustRunAfter copyProductZip
+    tasks.izPackCreateInstaller.mustRunAfter copyIzpackResources
+    tasks.izPackCreateInstaller.mustRunAfter distZip
+    tasks.izPackCreateInstaller.mustRunAfter copyProductZip
+    tasks.izPackCreateInstaller.mustRunAfter copyJDK
 }
