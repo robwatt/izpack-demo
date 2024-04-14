@@ -30,5 +30,5 @@ It works like so:
 * Run `./gradlew distZip`, this will build the required `jar` and `zip` files in the `installer` and `product` modules.
 * Once successful, run `./gradlew makeInstaller` this needs to be run separately due needing the output of `distZip` from specifically the `product` project.
   * This will create installer jar file and place it in the parent `/build` folder.
-* Next run `./gradlew createAllExecutables`, this will create the file `installer.exe` with the `process.jar` and the `product.zip` embedded in it
-* TODO - bundle it all together in a single `zip` file that can then be delivered to a user to unzip and install.
+  * This will also create the installer.exe as a final task and place it in the `launch4j` folder
+* Next run `./gradlew packageDistribution`.  This will package up the installer and the jdk as a single zip file.
