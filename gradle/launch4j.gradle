@@ -1,3 +1,6 @@
+// Tasks used to configure Launch4j
+
+// Configure Launch4j
 launch4j {
     outfile = 'installer.exe'
     mainClassName = 'com.izforge.izpack.installer.bootstrap.Installer'
@@ -5,19 +8,3 @@ launch4j {
     bundledJrePath = './jdk'
     jarTask = project.tasks.izPackCreateInstaller
 }
-
-//tasks.register('createInstaller', Launch4jLibraryTask) {
-//    dependsOn 'prepareJDK'
-//    outfile = 'installer.exe'
-//    mainClassName = 'com.izforge.izpack.installer.Installer'
-//    icon = layout.projectDirectory.file('src/main/resources/icon.ico').toString()
-//    bundledJrePath = './jdk'
-//}
-
-//tasks.register('createUninstaller', Launch4jLibraryTask) {
-//    dependsOn 'prepareJDK'
-//    outfile = 'uninstaller.exe'
-//    mainClassName = 'com.izforge.izpack.uninstaller.Uninstaller'
-//    icon = layout.projectDirectory.file('src/main/resources/icon.ico').toString()
-//    bundledJrePath = './jdk'
-//}

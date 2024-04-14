@@ -29,6 +29,7 @@ tasks.register('copyJDK', Copy) {
     into layout.buildDirectory.dir('runtime/jdk')
 }
 
+// Configure IzPack
 izpack {
     baseDir = layout.buildDirectory.dir('assemble/izpack').get().asFile
     installFile = file('izpack/installer.xml')

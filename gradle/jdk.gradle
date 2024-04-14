@@ -2,17 +2,19 @@ import java.nio.file.Files
 
 def jdkVersion = "jdk-17.0.10+7" // Eclipse Temurin JDK version to download ( from https://adoptium.net/temurin/releases/ )
 
+// Uses the plugin "de.undercouch.download" to download the JDK we will use to bundle with the installer.
+// This JDK can also be used to launch the Java-based product
 tasks.register('downloadJDK', Download) {
     src "https://api.adoptium.net/v3/binary/version/${jdkVersion}/windows/x64/jre/hotspot/normal/eclipse?project=jdk"
     dest layout.buildDirectory.file('jdk.zip')
     overwrite false
 }
 
+// Prepares the bundled JDK by downloading it, and unzipping it.
 tasks.register('prepareJDK', Copy) {
     doNotTrackState('This task should not have up-to-date checks...')
     dependsOn downloadJDK
     dependsOn jar
-//    dependsOn copyProcessJar
 
     from zipTree(downloadJDK.dest)
     into layout.buildDirectory
@@ -26,6 +28,7 @@ tasks.register('prepareJDK', Copy) {
     finalizedBy deleteJDK
 }
 
+// Delete the downloaded JDK once we have unzipped it...keep the place tidy.
 tasks.register('deleteJDK', Delete) {
     delete layout.buildDirectory.file('jdk.zip')
 }
