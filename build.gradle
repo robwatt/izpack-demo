@@ -21,12 +21,14 @@ dependencies {
     izpack 'org.codehaus.izpack:izpack-ant:5.2.1'
 }
 
+// Copies everything to the parent build folder so we can get IzPack to create its installer.  At the end, there will
+// be an executable uber jar representing the installer.
+// At the end of this task it will take this jar and create an EXE out of it.
 tasks.register('makeInstaller', Copy) {
     dependsOn copyJDK
     dependsOn copyIzpackResources
     dependsOn copyProcessJar
     dependsOn copyProductZip
-    dependsOn distZip
     dependsOn izPackCreateInstaller
 
     tasks.jar.mustRunAfter copyProcessJar
@@ -35,4 +37,16 @@ tasks.register('makeInstaller', Copy) {
     tasks.izPackCreateInstaller.mustRunAfter distZip
     tasks.izPackCreateInstaller.mustRunAfter copyProductZip
     tasks.izPackCreateInstaller.mustRunAfter copyJDK
+    tasks.izPackCreateInstaller.mustRunAfter copyProcessJar
+
+    finalizedBy(createExe)
+}
+
+// Packages the entire distribution into a single zip file.  This will contain the installer and the JDK at the root
+// level.  The installer will do whatever it has been programmed to do.
+tasks.register('packageDistribution', Zip) {
+    from fileTree(layout.buildDirectory.dir('runtime'))
+    from file(layout.buildDirectory.dir('launch4j'))
+    archiveBaseName = 'izpack'
+    destinationDirectory = layout.buildDirectory.dir('distributions')
 }

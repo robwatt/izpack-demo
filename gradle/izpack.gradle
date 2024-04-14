@@ -26,7 +26,7 @@ tasks.register('copyProcessJar', Copy) {
 // Copy the jdk that will be bundled with the EXE
 tasks.register('copyJDK', Copy) {
     from { project(':installer').layout.buildDirectory.dir('jdk') }
-    into layout.buildDirectory.dir('jdk')
+    into layout.buildDirectory.dir('runtime/jdk')
 }
 
 izpack {

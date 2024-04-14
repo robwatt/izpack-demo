@@ -21,8 +21,3 @@ launch4j {
 //    icon = layout.projectDirectory.file('src/main/resources/icon.ico').toString()
 //    bundledJrePath = './jdk'
 //}
-
-// May not be needed unless we want to copy the jdk to the launch4j location to be zipped up at a later date
-tasks.register('createInstallerExe') {
-    dependsOn createAllExecutables
-}
