@@ -17,6 +17,9 @@ This module is designed to hold any Java code used as the actual product.  For b
 
 This is the code that will be unzipped and installed in the target install directory the user chooses by the installer.
 
+## IzPack Resources
+When configuring your installer you need an `installer.xml` and possibly several other resources files.  All of these files are stored in the `/izpack` directory.
+
 ## Gradle files
 The major sections are broken down into their own gradle file
 
