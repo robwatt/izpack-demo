@@ -1,17 +1,16 @@
 <izpack:installation
         xmlns:izpack="http://izpack.org/schema/installation"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
+        xsi:schemaLocation="http://izpack.org/schema/installation https://github.com/izpack/izpack.github.com/tree/master/schema/5.0/izpack-installation-5.0.xsd">
     <info>
         <appname>izPack demo</appname>
-        <appversion>1.0</appversion>
+        <appversion>@VERSION@</appversion>
         <authors>
             <author name="Rob Watt" email=""/>
         </authors>
         <javaversion>17</javaversion>
         <uninstaller name="uninstall.jar" path="${INSTALL_PATH}/uninstaller" write="yes"/>
         <summarylogfilepath>$INSTALL_PATH/InstallationSummary.html</summarylogfilepath>
-        <writeinstallationinformation>no</writeinstallationinformation>
         <run-privileged/>
         <tempdir/>
     </info>
@@ -39,18 +38,26 @@
 
     <resources>
         <res id="ProcessPanel.Spec.xml" src="ProcessPanel.Spec.xml"/>
+        <res id="RegistrySpec.xml" src="RegistrySpec.xml"/>
     </resources>
 
     <jar src="izpack-process.jar"/>
 
-    <panels>
-        <panel classname="CheckedHelloPanel"/>
-        <panel classname="HTMLInfoPanel" id="readme"/>
-        <panel classname="TargetPanel"/>
-        <panel classname="InstallPanel"/>
-        <panel classname="ProcessPanel"/>
-        <panel classname="FinishPanel"/>
-    </panels>
+    <listeners>
+        <listener classname="org.raw.izpack.UninstallListenerExample" stage="uninstall"
+                  jar="@BUILD_FOLDER@/assemble/izpack/uninstaller-all.jar"/>
+        <listener classname="RegistryInstallerListener" stage="install"/>
+        <listener classname="RegistryUninstallerListener" stage="uninstall"/>
+    </listeners>
+
+    <natives>
+        <native type="3rdparty" name="COIOSHelper.dll" uninstaller="true">
+            <os family="windows"/>
+        </native>
+        <native type="3rdparty" name="COIOSHelper_x64.dll" uninstaller="true">
+            <os family="windows"/>
+        </native>
+    </natives>
 
     <packs>
         <pack name="Product ABC" required="yes" id="pack.product">
@@ -59,19 +66,14 @@
         </pack>
     </packs>
 
-    <!--    While this works, changing the version of the app will create a 2nd version in Windows instead of upgrading the existing version. -->
-    <!--    <natives>-->
-    <!--        <native type="3rdparty" name="COIOSHelper.dll" stage="both">-->
-    <!--            <os family="windows"/>-->
-    <!--        </native>-->
-    <!--        <native type="3rdparty" name="COIOSHelper_x64.dll" stage="both">-->
-    <!--            <os family="windows"/>-->
-    <!--        </native>-->
-    <!--    </natives>-->
-
-    <!--    <listeners>-->
-    <!--        <listener classname="RegistryInstallerListener" stage="install"/>-->
-    <!--        <listener classname="RegistryUninstallerListener" stage="uninstall"/>-->
-    <!--    </listeners>-->
+    <panels>
+        <!-- The CheckedHelloPanel is not required for the Registry listener unless you want to use it -->
+        <!--        <panel classname="CheckedHelloPanel"/>-->
+        <panel classname="HTMLInfoPanel" id="readme"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ProcessPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
 
 </izpack:installation>

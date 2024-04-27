@@ -28,16 +28,21 @@ tasks.register('makeInstaller', Copy) {
     dependsOn copyJDK
     dependsOn copyIzpackResources
     dependsOn copyProcessJar
+    dependsOn copyUninstallJar
     dependsOn copyProductZip
+    dependsOn replaceTokens
     dependsOn izPackCreateInstaller
 
     tasks.jar.mustRunAfter copyProcessJar
+    tasks.jar.mustRunAfter copyUninstallJar
     tasks.copyIzpackResources.mustRunAfter copyProductZip
+    tasks.izPackCreateInstaller.mustRunAfter replaceTokens
     tasks.izPackCreateInstaller.mustRunAfter copyIzpackResources
     tasks.izPackCreateInstaller.mustRunAfter distZip
     tasks.izPackCreateInstaller.mustRunAfter copyProductZip
     tasks.izPackCreateInstaller.mustRunAfter copyJDK
     tasks.izPackCreateInstaller.mustRunAfter copyProcessJar
+    tasks.izPackCreateInstaller.mustRunAfter copyUninstallJar
 
     finalizedBy(createExe)
 }

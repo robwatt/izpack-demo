@@ -2,21 +2,18 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'application'
     id 'java'
-    id 'com.bmuschko.izpack' version '3.2'
-    id 'edu.sc.seis.launch4j' version '3.0.5'
-    id 'de.undercouch.download' version "5.1.0"
 }
-
-apply from: "${project.rootDir}/gradle/jdk.gradle"
 
 group = 'org.raw'
 version = '1.0-SNAPSHOT'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    implementation group: 'org.codehaus.izpack', name: 'izpack-panel', version: '5.2.1'
     implementation group: 'org.codehaus.izpack', name: 'izpack-api', version: '5.2.1'
     implementation libs.log4j2.core
-    izpack 'org.codehaus.izpack:izpack-dist:5.2.1'
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok
@@ -31,19 +28,15 @@ java {
 }
 
 jar {
-    archiveBaseName = 'izpack-process'
+    archiveBaseName = 'izpack-uninstall'
     archiveVersion = version.toString()
 }
 
 shadowJar {
-    mainClassName = 'org.raw.izpack.UpgradeProcessHandler'
+    mainClassName = 'org.raw.izpack.UninstallListenerExample'
 }
 
-shadowJar.dependsOn prepareJDK
 distZip.dependsOn shadowJar
-distZip.dependsOn prepareJDK
-distTar.dependsOn prepareJDK
-startScripts.dependsOn prepareJDK
 
 test {
     useJUnitPlatform()

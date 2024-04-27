@@ -1,4 +1,15 @@
 rootProject.name = 'izpack-demo'
 include 'product'
 include 'installer'
+include 'uninstaller'
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            library('log4j2-core', 'org.apache.logging.log4j:log4j-core:2.23.1')
+            library('lombok', 'org.projectlombok:lombok:1.18.32')
+        }
+    }
+}
+include 'uninstaller'
 
