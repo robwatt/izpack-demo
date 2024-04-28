@@ -7,4 +7,6 @@ launch4j {
     icon = project(':installer').layout.projectDirectory.file('src/main/resources/icon.ico').toString()
     bundledJrePath = './jdk'
     jarTask = project.tasks.izPackCreateInstaller
+    companyName = 'Rob Watt'
+    copyright = '2024'
 }
