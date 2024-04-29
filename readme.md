@@ -9,8 +9,8 @@ It also creates a ProcessPanel and shows how to run the java code in the panel.
 There are 3 modules in this demo. I had originally created a single module demo, but it was too simple for what I think
 many people would probably want to do with this.
 
-In that end, I expanded on the demo and created a 2 module system. The first module is code for the installer. The
-second module is the product the user is trying to install.
+In that end, I expanded on the demo and created a 3 module system. The first module is code for the installer. The
+second module is the uninstaller, and the 3rd is the product the user is trying to install.
 
 ### Installer
 
