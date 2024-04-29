@@ -84,7 +84,7 @@ It works like so:
 
 ## What does this installer do?
 
-While the bulk of this code is to create a demo on how to integrate IzPack with Launch4j in a reasonably complext
+While the bulk of this code is to create a demo on how to integrate IzPack with Launch4j in a reasonably complex
 scenario, it was also important to attempt to add some of the more confusing items from IzPack.
 
 The installer also demonstrates the following:
