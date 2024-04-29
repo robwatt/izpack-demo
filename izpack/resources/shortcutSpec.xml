@@ -1,0 +1,9 @@
+<izpack:shortcuts version="5.0"
+                  xmlns:izpack="http://izpack.org/schema/shortcuts"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://izpack.org/schema/shortcuts https://github.com/izpack/izpack.github.com/tree/master/schema/5.0/izpack-shortcuts-5.0.xsd">
+
+    <shortcut name="IzPack-Demo"
+              target="start www.google.ca"
+              description="Opens Google in your default browser"/>
+</izpack:shortcuts>
